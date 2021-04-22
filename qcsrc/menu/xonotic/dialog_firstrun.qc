@@ -36,7 +36,7 @@ void XonoticFirstRunDialog_fill(entity me)
 	me.TR(me);
 	me.TR(me);
 		me.TDempty(me, 1);
-		me.TD(me, 2, 4, e = makeXonoticTextLabel(0, _("Welcome to Xonotic, please select your language preference and enter your player name to get started.  You can change these options later through the menu system.")));
+		me.TD(me, 1, 6, e = makeXonoticTextLabel(0, _("Choose your player name from rocketjump.zone/players, GL HF!")));
 		e.allowWrap = 1;
 	me.TR(me);
 

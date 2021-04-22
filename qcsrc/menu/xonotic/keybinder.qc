@@ -34,7 +34,7 @@ void KeyBinds_BuildList()
 
 	KEYBIND_HEADER(_("Moving"));
 	KEYBIND_DEF("+forward"                              , _("forward"));
-	KEYBIND_DEF("+back"                                 , _("backpedal"));
+	KEYBIND_DEF("+back"                                 , _("backward"));
 	KEYBIND_DEF("+moveleft"                             , _("strafe left"));
 	KEYBIND_DEF("+moveright"                            , _("strafe right"));
 	KEYBIND_DEF("+jump"                                 , _("jump / swim"));
@@ -53,7 +53,7 @@ void KeyBinds_BuildList()
 	KEYBIND_DEF("weapnext"                              , CTX(_("WEAPON^next")));
 	KEYBIND_DEF("weaplast"                              , CTX(_("WEAPON^previously used")));
 	KEYBIND_DEF("weapbest"                              , CTX(_("WEAPON^best")));
-	KEYBIND_DEF("reload"                                , _("reload"));
+	KEYBIND_DEF("reload"                                , _("reload (not on rjz servers)"));
 	KEYBIND_DEF("dropweapon"                            , _("drop weapon / throw nade"));
 
 	#define ADD_TO_W_LIST(pred) \
@@ -390,9 +390,6 @@ float XonoticKeyBinder_keyDown(entity me, int key, bool ascii, float shift)
 		case K_KP_DEL:
 		case K_BACKSPACE:
 			KeyBinder_Bind_Clear(me, me);
-			break;
-		case K_MOUSE2:
-			KeyBinder_Bind_Edit(me, me);
 			break;
 		default:
 			r = SUPER(XonoticKeyBinder).keyDown(me, key, ascii, shift);

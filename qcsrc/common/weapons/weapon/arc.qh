@@ -3,7 +3,7 @@
 CLASS(Arc, Weapon)
 /* spawnfunc */ ATTRIB(Arc, m_canonical_spawnfunc, string, "weapon_arc");
 /* ammotype  */ ATTRIB(Arc, ammo_type, int, RES_CELLS);
-/* impulse   */ ATTRIB(Arc, impulse, int, 3);
+/* impulse   */ ATTRIB(Arc, impulse, int, 6);
 /* flags     */ ATTRIB(Arc, spawnflags, int, WEP_TYPE_HITSCAN);
 /* rating    */ ATTRIB(Arc, bot_pickupbasevalue, float, 8000);
 /* color     */ ATTRIB(Arc, wpcolor, vector, '1 1 1');
@@ -17,7 +17,7 @@ CLASS(Arc, Weapon)
 /* crosshair */ ATTRIB(Arc, w_crosshair_size, float, 0.7);
 /* wepimg    */ ATTRIB(Arc, model2, string, "weaponarc");
 /* refname   */ ATTRIB(Arc, netname, string, "arc");
-/* wepname   */ ATTRIB(Arc, m_name, string, _("Arc"));
+/* wepname   */ ATTRIB(Arc, m_name, string, _("LG"));
 
 #define X(BEGIN, P, END, class, prefix) \
 	BEGIN(class) \
