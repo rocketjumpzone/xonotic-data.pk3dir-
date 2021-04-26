@@ -466,11 +466,11 @@ void Cmd_Scoreboard_SetFields(int argc)
 	sbt_num_fields = 0;
 
 	hud_fontsize = HUD_GetFontsize("hud_fontsize");
-	
+
 	duel_score_fontsize = hud_fontsize * 3;
 	duel_name_fontsize = hud_fontsize * 1.5;
 	duel_score_size = vec2(duel_score_fontsize.x * 1.5, duel_score_fontsize.y * 1.25);
-	
+
 	team_score_fontsize = hud_fontsize * 2;
 	team_name_fontsize = hud_fontsize * 1.5;
 	team_score_size = vec2(team_score_fontsize.x * 1.5, team_score_fontsize.y * 1.25);
@@ -649,7 +649,7 @@ string Scoreboard_GetName(entity pl)
 			sbt_field_icon2_rgb = colormapPaletteColor(f % 16, 1);
 		}
 	}
-	
+
 	return entcs_GetName(pl.sv_entnum);
 }
 
@@ -661,7 +661,7 @@ string Scoreboard_GetCountrycode(entity pl)
 		sbt_field_icon3 = strcat("gfx/flags/", ftos(ccode));
 	else
 		sbt_field_icon3 = strcat("gfx/flags/", ftos(0)); //if user hasn't assigned country flag
-	
+
 	return "";
 	//return ftos(entcs_GetCountryCode(pl.sv_entnum)); //returns a number
 }
@@ -699,7 +699,7 @@ string Scoreboard_GetField(entity pl, PlayerScoreField field)
 			if(f == 0)
 				return _("N/A");
 			sbt_field_rgb = getPingColor(f);
-			
+
 			return ftos(f);
 			//return ftos(pl.team);
 
@@ -716,7 +716,7 @@ string Scoreboard_GetField(entity pl, PlayerScoreField field)
 			tmp = bound(0, f / 0.2 + tmp / 0.04, 1); // 20% is REALLY BAD pl
 			sbt_field_rgb = '1 0.5 0.5' - '0 0.5 0.5' * tmp;
 			return str;
-		
+
 		//LegendGuard adds Country REGISTER in the switch 05-04-2021
 		case SP_COUNTRY:
 			str = Scoreboard_GetCountrycode(pl);
@@ -902,7 +902,7 @@ vector Scoreboard_DrawHeader(vector pos, vector rgb, bool other_players, int tea
 	string title_str;
 	vector title_rgb;
 	vector column_dim = eY * panel_size.y;
-	
+
 	if(other_players)
 		column_dim.y -= 1.25 * hud_fontsize.y;
 	vector text_offset = eY * (1.25 - 1) / 2 * hud_fontsize.y;
@@ -911,9 +911,9 @@ vector Scoreboard_DrawHeader(vector pos, vector rgb, bool other_players, int tea
 	{
 		if(sbt_field[i] == SP_SEPARATOR)
 			break;
-		
+
 		vector text_offset_center = '0 0 0';
-		
+
 		if(sbt_field[i] == SP_PING && teamplay) {
 			title_str = sprintf("(%d)", average_ping[Team_TeamToIndex(team) - 1]);
 			title_rgb = getPingColor(average_ping[Team_TeamToIndex(team) - 1]);
@@ -922,7 +922,7 @@ vector Scoreboard_DrawHeader(vector pos, vector rgb, bool other_players, int tea
 			title_str = sbt_field_title[i];
 			title_rgb = rgb * 1.5;
 		}
-		
+
 		column_dim.x = sbt_field_size[i] + hud_fontsize.x;
 		if (sbt_highlight)
 			if (i % 2)
@@ -1099,17 +1099,17 @@ vector Scoreboard_DrawOthers(vector item_pos, vector rgb, int this_team, entity 
 			continue;
 		if(pl == ignored_pl)
 			continue;
-		
+
 		string flag_name = "";
 		vector flag_size = '0 0 0';
 		Scoreboard_GetField(pl, SP_COUNTRY);
-		
+
 		if(sbt_field_icon3 != "") {
 			sz = draw_getimagesize(sbt_field_icon3);
 			flag_name = sbt_field_icon3;
 			flag_size = vec2(hud_fontsize.x * (sz.x / sz.y), hud_fontsize.y);
 		}
-		
+
 		field = "";
 		if(this_team == NUM_SPECTATOR)
 		{
@@ -1189,17 +1189,17 @@ vector Scoreboard_DrawMedal(vector pos, string icon, float height, float number)
 {
 	if(!number) return pos;
 	total_medals += number;
-	
+
 	vector tmp_sz, tmp_sz2;
 	tmp_sz = draw_getimagesize(icon);
 	tmp_sz2 = vec2(height*(tmp_sz.x/tmp_sz.y), height);
 	string val = ftos(number);
-	
+
 	drawpic(pos, icon, tmp_sz2, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	pos.x += tmp_sz2.x + hud_fontsize.x * 0.25;
 	drawstring(pos + eY * ((tmp_sz2.y - hud_fontsize.y) / 2), val, hud_fontsize, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	pos.x += stringwidth(val, false, hud_fontsize) + hud_fontsize.x * 0.5;
 	return pos;
 }
@@ -1209,7 +1209,7 @@ vector Scoreboard_Duel_DrawPickup(vector pos, bool skinned, string icon, vector 
 	vector tmp_in = pos;
 	vector tmp_sz, tmp_sz2;
 	string picpath;
-	
+
 	// Icon
 	if(skinned) {
 		picpath = strcat(hud_skin_path, "/", icon);
@@ -1218,26 +1218,26 @@ vector Scoreboard_Duel_DrawPickup(vector pos, bool skinned, string icon, vector 
 	} else {
 		picpath = icon;
 	}
-		
+
 	tmp_sz = draw_getimagesize(picpath);
 	tmp_sz2 = vec2(sz.y*(tmp_sz.x/tmp_sz.y), sz.y);
-	
+
 	tmp_in.x = pos.x + ((sz.x - tmp_sz2.x) / 2);
 	drawpic(tmp_in, picpath, tmp_sz2, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	// Number
 	if(invert)
 		tmp_in.x += tmp_sz2.x + hud_fontsize.x * 0.25;
 	else
 		tmp_in.x -= hud_fontsize.x * 0.25 + hud_fontsize.x;
-	
+
 	tmp_in.y += (tmp_sz2.y - hud_fontsize.y) / 2;
 	drawstring(tmp_in,
 		((number == -1) ? "?" : ftos(number)),
 		hud_fontsize, ((number > 0) ? '1 1 1' : '0.5 0.5 0.5'),
 		panel_fg_alpha,
 		DRAWFLAG_NORMAL);
-	
+
 	pos.y += sz.y * 1.1;
 	return pos;
 }
@@ -1248,36 +1248,36 @@ void Scoreboard_Duel_DrawTable(vector pos, bool invert, entity pl, entity tm)
 	string tmp_str;
 	float sz;
 	float average_acc = 0;
-	
+
 	panel_pos = pos;
-	
+
 	HUD_Panel_DrawBg();
-	
+
 	// Stop here if there are no scores available
 	if(pl.team != tm.team) return;
-	
+
 	tmp = pos;
 	tmp.x += panel_bg_padding;
 	tmp.y += panel_bg_padding;
 	panel_size.x -= panel_bg_padding * 2;
-	
+
 	//if (sbt_bg_alpha)
 	//	drawpic_tiled(pos, "gfx/scoreboard/scoreboard_bg", tmp, panel_size, rgb, sbt_bg_alpha, DRAWFLAG_NORMAL);
 
 	// Score: highlight
 	if(invert) { tmp.x += panel_size.x; tmp.x -= duel_score_size.x; }
 	drawfill(tmp, duel_score_size, '0 0 0', sbt_highlight_alpha, DRAWFLAG_NORMAL);
-	
+
 	// Score: text
 	tmp_str = ftos(pl.(scores(SP_SCORE)));
 	tmp_in = tmp;
 	tmp_in.x += (duel_score_size.x / 2) - (stringwidth(tmp_str, true, duel_score_fontsize) / 2);
 	tmp_in.y += (duel_score_size.y / 2) - (duel_score_fontsize.y / 2);
-	
+
 	draw_beginBoldFont();
 	drawstring(tmp_in, tmp_str, duel_score_fontsize, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
 	draw_endBoldFont();
-	
+
 	// Player name
 	tmp_str = Scoreboard_GetField(pl, SP_NAME);
 	tmp_in = tmp;
@@ -1287,7 +1287,7 @@ void Scoreboard_Duel_DrawTable(vector pos, bool invert, entity pl, entity tm)
 		tmp_in.x += duel_score_size.x + duel_name_fontsize.x * 0.5;
 	tmp_in.y += (duel_score_size.y - duel_name_fontsize.y) / 2;
 	drawcolorcodedstring(tmp_in, tmp_str, duel_name_fontsize, panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	//LegendGuard adds a conditional sentence for country column 05-04-2021
 	// Player country icon/flag
 	Scoreboard_GetField(pl, SP_COUNTRY);
@@ -1301,18 +1301,18 @@ void Scoreboard_Duel_DrawTable(vector pos, bool invert, entity pl, entity tm)
 		tmp_in.y += (duel_name_fontsize.y - hud_fontsize.y) / 2;
 		drawpic(tmp_in, sbt_field_icon3, vec2(hud_fontsize.x * sbt_fixcolumnwidth_iconlen, hud_fontsize.y), sbt_field_icon1_rgb, panel_fg_alpha, DRAWFLAG_NORMAL);
 	}
-	
+
 	// Header
 	float column_width = panel_size.x / 5;
 	tmp.x = pos.x + panel_bg_padding;
 	tmp.y += hud_fontsize.y * 3 + hud_fontsize.y;
-	
+
 	vector column_dim;
 	int i;
 
 	i = (invert ? 4 : 0);
 	column_dim = vec2(column_width * 4, hud_fontsize.y);
-	
+
 	drawstring(tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2) - eX * (stringwidth("kills", false, hud_fontsize) / 2),
 		"kills", hud_fontsize, '0.5 0.5 1', panel_fg_alpha, DRAWFLAG_NORMAL);
 	drawstring(tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2) - eX * (stringwidth("dmg", false, hud_fontsize) / 2),
@@ -1323,117 +1323,121 @@ void Scoreboard_Duel_DrawTable(vector pos, bool invert, entity pl, entity tm)
 		"hits", hud_fontsize, '0.5 0.5 1', panel_fg_alpha, DRAWFLAG_NORMAL);
 	drawstring(tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2) - eX * (stringwidth("ping", false, hud_fontsize) / 2),
 		"ping", hud_fontsize, '0.5 0.5 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	tmp.x = pos.x + panel_bg_padding;
 	tmp.y += hud_fontsize.y;
-	
+
 	// Main row
 	i = (invert ? 4 : 0);
-	
+
 	tmp_str = ftos(pl.(scores(SP_KILLS)));
 	drawstring(tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2) - eX * (stringwidth(tmp_str, false, hud_fontsize * 1.25) / 2),
 		tmp_str, hud_fontsize  * 1.25, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	tmp_str = ftos(pl.(scores(SP_DMG)));
 	drawstring(tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2) - eX * (stringwidth(tmp_str, false, hud_fontsize * 1.25) / 2),
 		tmp_str, hud_fontsize  * 1.25, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-		
+
 	tmp_acc = tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2);
-		
+
 	if(invert)
 		i--;
 	else
 		i++;
-	
+
 	tmp_str = Scoreboard_GetField(pl, SP_PING);
-	drawstring(tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2) - eX * (stringwidth(tmp_str, false, hud_fontsize * 1.25) / 2),
+	drawstring(tmp + eX * column_width * i + (eX * column_width / 2) - eX * (stringwidth(tmp_str, false, hud_fontsize * 1.25) / 2),
 		tmp_str, hud_fontsize * 1.25, sbt_field_rgb, panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
+	tmp_str = Scoreboard_GetField(pl, SP_PL);
+	drawstring(tmp + eX * column_width * (invert ? i-- : i++) + (eX * column_width / 2) - eX * (stringwidth(tmp_str, false, hud_fontsize * 0.75) / 2) + eY * (hud_fontsize.y * 1.25),
+		tmp_str, hud_fontsize * 0.75, sbt_field_rgb, panel_fg_alpha, DRAWFLAG_NORMAL);
+
 	tmp.x = pos.x + panel_bg_padding;
 	tmp.y += hud_fontsize.y * 2;
-	
+
 	tmp_in = tmp;
-	
+
 	int total_weapons = 0;
-	
+
 	// Accuracy rows
 	WepSet weapons_inmap = WepSet_GetFromStat_InMap();
 	FOREACH(Weapons, it != WEP_Null, {
 		WepSet set = it.m_wepset;
-		if (!(weapons_inmap & set))
+		if (!(weapons_inmap & set) && it != WEP_BLASTER && it != WEP_SHOTGUN) // z411 TODO : We'll be hardcoding this for now.
 			continue;
 		if (it.spawnflags & WEP_TYPE_OTHER)
 			continue;
-		
+
 		int weapon_cnt_fired = pl.accuracy_cnt_fired[i - WEP_FIRST];
 		int weapon_cnt_hit   = pl.accuracy_cnt_hit[i - WEP_FIRST];
 		int weapon_acc = 0;
 		if(weapon_cnt_fired)
 			weapon_acc = floor((weapon_cnt_hit / weapon_cnt_fired) * 100);
 		average_acc += weapon_acc;
-		
+
 		string draw_str;
-		
+
 		// weapon stats
 		int c = (invert ? 4 : 0);
-		
+
 		drawfill(tmp_in + eX * column_width * (invert ? 1 : 0), column_dim, '0 0 0', sbt_highlight_alpha, DRAWFLAG_NORMAL);
-		
+
 		draw_str = ftos(pl.accuracy_frags[i - WEP_FIRST]);
 		drawstring(tmp_in + eX * column_width * (invert ? c-- : c++) + eX * ((column_width - stringwidth(draw_str, false, hud_fontsize)) / 2),
-			draw_str, hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.5 0.5 0.5'), panel_fg_alpha, DRAWFLAG_NORMAL);
-		
+			draw_str, hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.1 0.1 0.1'), panel_fg_alpha, DRAWFLAG_NORMAL);
+
 		draw_str = ftos(pl.accuracy_hit[i - WEP_FIRST]);
 		drawstring(tmp_in + eX * column_width * (invert ? c-- : c++) + eX * ((column_width - stringwidth(draw_str, false, hud_fontsize)) / 2),
-			draw_str, hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.5 0.5 0.5'), panel_fg_alpha, DRAWFLAG_NORMAL);
-			
+			draw_str, hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.1 0.1 0.1'), panel_fg_alpha, DRAWFLAG_NORMAL);
+
 		draw_str = sprintf("%d%%", weapon_acc);
 		drawstring(tmp_in + eX * column_width * (invert ? c-- : c++) + eX * ((column_width - stringwidth(draw_str, false, hud_fontsize)) / 2),
-			draw_str, hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.5 0.5 0.5'), panel_fg_alpha, DRAWFLAG_NORMAL);
-			
+			draw_str, hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.1 0.1 0.1'), panel_fg_alpha, DRAWFLAG_NORMAL);
+
 		draw_str = strcat(ftos(weapon_cnt_hit), " / ", ftos(weapon_cnt_fired));
-		drawstring(tmp_in + eX * column_width * (invert ? c-- : c++) + eX * (column_width / 2) - eX * stringwidth("36 /", false, hud_fontsize),
-			draw_str,hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.5 0.5 0.5'), panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+		drawstring(tmp_in + eX * column_width * (invert ? c-- : c++) + eX * (column_width / 2) - eX * stringwidth(ftos(weapon_cnt_hit), false, hud_fontsize) - eX * hud_fontsize.x * 0.5,
+			draw_str,hud_fontsize, (weapon_cnt_fired ? '1 1 1' : '0.1 0.1 0.1'), panel_fg_alpha, DRAWFLAG_NORMAL);
+
 		// weapon icon
 		if(invert) {
 			tmp_in.x = pos.x + panel_size.x - panel_bg_padding - hud_fontsize.x / 2;
 			drawpic_aspect_skin(tmp_in, it.model2, vec2(50, hud_fontsize.y), '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
 		}
-		
+
 		tmp_in.x = pos.x + panel_bg_padding;
 		tmp_in.y += hud_fontsize.y * 1.25;
-		
+
 		if(weapon_cnt_fired)
 			total_weapons++;
 	});
 	if(total_weapons)
 		average_acc = floor((average_acc / total_weapons) + 0.5);
-	
+
 	// draw total accuracy now
 	tmp_str = sprintf("%d%%", average_acc);
 	drawstring(tmp_acc - eX * (stringwidth(tmp_str, false, hud_fontsize * 1.25) / 2),
 		tmp_str, hud_fontsize * 1.25, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	// Icon column
 	vector icon_sz = vec2(column_width, hud_fontsize.y*1.5);
-	
+
 	if(!invert)
 		tmp.x += column_width * 4;
 	// Medal rows
 	drawstring(tmp + eX * ((column_width - stringwidth("medals", false, hud_fontsize)) / 2),
 		"medals", hud_fontsize, '0.5 0.5 1', panel_fg_alpha, DRAWFLAG_NORMAL);
 	tmp.y += hud_fontsize.y * 1.25;
-	
+
 	tmp = Scoreboard_Duel_DrawPickup(tmp, false, "gfx/medal/humiliation", icon_sz, pl.(scores(SP_MEDAL_HUMILIATION)), invert);
 	tmp = Scoreboard_Duel_DrawPickup(tmp, false, "gfx/medal/impressive", icon_sz, pl.(scores(SP_MEDAL_IMPRESSIVE)), invert);
 	tmp = Scoreboard_Duel_DrawPickup(tmp, false, "gfx/medal/excellent", icon_sz, pl.(scores(SP_MEDAL_EXCELLENT)), invert);
-	
+
 	// Item rows
 	drawstring(tmp + eX * ((column_width - stringwidth("items", false, hud_fontsize)) / 2),
 		"items", hud_fontsize, '0.5 0.5 1', panel_fg_alpha, DRAWFLAG_NORMAL);
 	tmp.y += hud_fontsize.y * 1.25;
-	
+
 	float inv_num = -1;
 	FOREACH(Items,
 		it.m_id == ITEM_ArmorMega.m_id ||
@@ -1443,7 +1447,7 @@ void Scoreboard_Duel_DrawTable(vector pos, bool invert, entity pl, entity tm)
 		if(intermission || warmup_stage || spectatee_status || pl.sv_entnum == current_player)
 			inv_num = inventoryslots[pl.sv_entnum].inv_items[it.m_id];
 		tmp = Scoreboard_Duel_DrawPickup(tmp, true, it.m_icon, icon_sz, inv_num, invert);
-		
+
 		if(it.m_id == REGISTRY_MAX(Items))
         	break;
 	});
@@ -1453,16 +1457,16 @@ vector Scoreboard_MakeDuelTable(vector pos, entity tm, vector rgb, vector bg_siz
 	vector end_pos = pos;
 	float screen_half = panel_size.x / 2;
 	float weapon_margin = hud_fontsize.x;
-	
+
 	panel_size.x = screen_half - weapon_margin;
 	panel_size.y = (duel_score_size.y * 5.5);
-	
+
 	entity pl_left = players.sort_next;
 	entity pl_right = pl_left.sort_next;
-	
+
 	Scoreboard_Duel_DrawTable(pos, true, pl_left, tm);
 	Scoreboard_Duel_DrawTable(pos + eX * screen_half + eX * weapon_margin, false, pl_right, tm);
-	
+
 	end_pos.y += panel_size.y + (panel_bg_padding * 2);
 	panel_size.x = screen_half * 2;
 	return end_pos;
@@ -1551,7 +1555,7 @@ vector Scoreboard_MakeTable(vector pos, entity tm, vector rgb, vector bg_size)
 		}
 		is_self = (pl.sv_entnum == current_player);
 		Scoreboard_DrawItem(pos, rgb, pl, is_self, i);
-		
+
 		if(Team_IsValidTeam(tm.team) && pl.ping) {
 			average_ping[Team_TeamToIndex(tm.team) - 1] += pl.ping;
 			++with_ping;
@@ -1595,15 +1599,15 @@ vector Scoreboard_MedalStats_Draw(vector pos)
 {
 	vector orig = pos;
 	float height = hud_fontsize.y * 2;
-	
+
 	entity pl = playerslots[current_player];
-	
+
 	vector title_pos = pos;
 	pos.x += 0.5 * hud_fontsize.x + panel_bg_padding;
 	pos.y += 1.25 * hud_fontsize.y;
-	
+
 	total_medals = 0;
-	
+
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/airshot", 		height, pl.(scores(SP_MEDAL_AIRSHOT)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/damage", 		height, pl.(scores(SP_MEDAL_DAMAGE)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/electrobitch", 	height, pl.(scores(SP_MEDAL_ELECTROBITCH)));
@@ -1614,21 +1618,21 @@ vector Scoreboard_MedalStats_Draw(vector pos)
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/impressive",		height, pl.(scores(SP_MEDAL_IMPRESSIVE)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/yoda", 			height, pl.(scores(SP_MEDAL_YODA)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/telefrag",		height, pl.(scores(SP_MEDAL_TELEFRAG)));
-	
+
 	if(total_medals)
 		pos.x += hud_fontsize.x;
-	
+
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/accuracy", 		height, pl.(scores(SP_MEDAL_ACCURACY)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/assist", 		height, pl.(scores(SP_MEDAL_ASSIST)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/capture", 		height, pl.(scores(SP_MEDAL_CAPTURE)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/defense", 		height, pl.(scores(SP_MEDAL_DEFENSE)));
 	pos = Scoreboard_DrawMedal(pos, "gfx/medal/perfect", 		height, pl.(scores(SP_MEDAL_PERFECT)));
-	
+
 	if(!total_medals) return orig;
-	
+
 	drawstring(title_pos, sprintf(_("Medal stats (total %d)"), total_medals),
 		hud_fontsize, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	pos.x = orig.x;
 	pos.y += height + hud_fontsize.y * 0.5;
 	return pos;
@@ -2121,7 +2125,7 @@ bool have_item_stats;
 bool Scoreboard_ItemStats_WouldDraw(float ypos)
 {
 	Inventory g_inventory = inventoryslots[current_player];
-	
+
 	if (MUTATOR_CALLHOOK(DrawScoreboardItemStats))
 		return false;
 	if (!autocvar_hud_panel_scoreboard_itemstats || !g_inventory || warmup_stage || ypos > 0.91 * vid_conheight)
@@ -2242,28 +2246,28 @@ void Scoreboard_Draw()
 	//drawcolorcodedstring(pos, "bienvenidoainternet.org", sb_gameinfo_type_fontsize, panel_fg_alpha, DRAWFLAG_NORMAL);
 	//drawpic_aspect(pos + '1 0 0' * (panel_size.x - 150), "gfx/bai_logo", vec2(150, sb_gameinfo_type_fontsize.y), '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
 	//pos.y += sb_gameinfo_type_fontsize.y;
-	
+
 	// Game Info: Game Type
 	str = MapInfo_Type_ToText(gametype);
-	
+
 	draw_beginBoldFont();
 	//drawcolorcodedstring(pos + '0.5 0 0' * (panel_size.x - stringwidth(str, true, sb_gameinfo_type_fontsize)), str, sb_gameinfo_type_fontsize, panel_fg_alpha, DRAWFLAG_NORMAL);
 	drawcolorcodedstring(pos, str, sb_gameinfo_type_fontsize, panel_fg_alpha, DRAWFLAG_NORMAL);
 	draw_endBoldFont();
-	
+
 	vector tmp_old_sz = draw_getimagesize("gfx/bai_logo");
 	float tmp_aspect = tmp_old_sz.x/tmp_old_sz.y;
 	vector tmp_new_sz = vec2(sb_gameinfo_type_fontsize.y * tmp_aspect, sb_gameinfo_type_fontsize.y);
 
 	drawpic(pos + '1 0 0' * (panel_size.x - tmp_new_sz.x), "gfx/bai_logo", tmp_new_sz, '1 1 1', panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	pos.y += sb_gameinfo_type_fontsize.y;
-	
+
 	// z411 servername
 	drawcolorcodedstring(pos + '0.5 0 0' * (panel_size.x - stringwidth_colors(hostname_full, sb_gameinfo_detail_fontsize)), hostname_full, sb_gameinfo_detail_fontsize, panel_fg_alpha, DRAWFLAG_NORMAL);
-	
+
 	pos.y += sb_gameinfo_detail_fontsize.y;
-	
+
 	// Game Info: Game Detail
 	float tl = STAT(TIMELIMIT);
 	float fl = STAT(FRAGLIMIT);
@@ -2438,30 +2442,30 @@ void Scoreboard_Draw()
 			}
 			draw_endBoldFont();
 			*/
-			
+
 			// z411 My team header
 			// Score: highlight
 			drawfill(pos, team_score_size, rgb * 0.5, sbt_highlight_alpha, DRAWFLAG_NORMAL);
-			
+
 			// Score: text
 			str = ftos(tm.(teamscores(ts_primary)));
 			str_pos = pos;
 			str_pos.x += (team_score_size.x / 2) - (stringwidth(str, true, team_score_fontsize) / 2);
 			str_pos.y += (team_score_size.y / 2) - (team_score_fontsize.y / 2);
-			
+
 			draw_beginBoldFont();
 			drawstring(str_pos, str, team_score_fontsize, rgb, panel_fg_alpha, DRAWFLAG_NORMAL);
 			draw_endBoldFont();
-			
+
 			// Team name
 			str = Team_CustomName(tm.team);
 			str_pos = pos;
 			str_pos.x += team_score_size.x + team_name_fontsize.x * 0.5;
 			str_pos.y += (team_score_size.y / 2) - (team_name_fontsize.y / 2);
 			drawcolorcodedstring(str_pos, str, team_name_fontsize, panel_fg_alpha, DRAWFLAG_NORMAL);
-			
+
 			pos.y += team_score_size.y + (hud_fontsize.y * 0.5);
-			
+
 			if(autocvar_hud_panel_scoreboard_bg_teams_color_team > 0)
 				panel_bg_color = rgb * autocvar_hud_panel_scoreboard_bg_teams_color_team;
 			else if(panel_bg_color_team > 0)
@@ -2477,7 +2481,7 @@ void Scoreboard_Draw()
 		for(tm = teams.sort_next; tm; tm = tm.sort_next)
 			if(tm.team != NUM_SPECTATOR)
 				break;
-		
+
 		// z411 make DUEL TABLE
 		pos = Scoreboard_MakeDuelTable(pos, tm, panel_bg_color, bg_size);
 	}
@@ -2492,7 +2496,7 @@ void Scoreboard_Draw()
 	}
 
 	pos = Scoreboard_MedalStats_Draw(pos);
-	
+
 	if (Scoreboard_AccuracyStats_WouldDraw(pos.y))
 		pos = Scoreboard_AccuracyStats_Draw(pos, panel_bg_color, bg_size);
 	if (Scoreboard_ItemStats_WouldDraw(pos.y))

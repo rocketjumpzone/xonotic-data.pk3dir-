@@ -321,7 +321,7 @@ void cvar_changes_init()
 		BADCVAR("g_maplist_mostrecent");
 		BADCVAR("sv_motd");
 		BADCVAR("sv_motd_permanent");
-		
+
 		BADPREFIX("g_teamnames_");
 
 		v = cvar_string(k);
@@ -1033,7 +1033,7 @@ spawnfunc(worldspawn)
 
 	world_initialized = 1;
 	__spawnfunc_spawn_all();
-	
+
 	if(!warmup_stage)
 		round_handler_Activate(true);
 }
@@ -1304,7 +1304,7 @@ void NextLevel()
 	*/
 
 	//pos = FindIntermission ();
-	
+
 	sound(NULL, CH_INFO, SND_ENDMATCH, VOL_BASE, ATTN_NONE);
 
 	VoteReset();
@@ -1316,7 +1316,7 @@ void NextLevel()
 	WeaponStats_Shutdown();
 
 	Kill_Notification(NOTIF_ALL, NULL, MSG_CENTER, CPID_Null); // kill all centerprints now
-	
+
 	// send winner notification
 	if(teamplay) {
 		Send_Notification(NOTIF_ALL, NULL, MSG_ANNCE, APP_TEAM_NUM(WinningConditionHelper_winnerteam, ANNCE_TEAM_WINS));
@@ -1334,22 +1334,22 @@ void NextLevel()
 	});
 
 	target_music_kill();
-	
+
 	// z411
 	if(autocvar_sv_jingle_end) {
 		int jingles_len = 0;
 		string jingles[32];
 		jingles[0] = "";
-		
+
 		FOREACH_WORD(autocvar_sv_jingle_end_list, it,
 		{
 			jingles[jingles_len] = it;
 			jingles_len++;
 		});
-		
+
 		if(jingles_len) {
 			int song_to_play = rint(random() * (jingles_len - 1));
-		
+
 			FOREACH_CLIENT(IS_REAL_CLIENT(it),
 			{
 				stuffcmd(it, "cd stop\n");
@@ -1400,7 +1400,7 @@ void InitiateOvertime() // ONLY call this if InitiateSuddenDeath returned true
 	//add one more overtime by simply extending the timelimit
 	cvar_set("timelimit", ftos(autocvar_timelimit + autocvar_timelimit_overtime));
 	Send_Notification(NOTIF_ALL, NULL, MSG_CENTER, CENTER_OVERTIME_TIME, autocvar_timelimit_overtime * 60);
-	
+
 	sound(NULL, CH_INFO, SND_OVERTIME, VOL_BASE, ATTN_NONE);
 	if(checkrules_overtimesadded == 1) {
 		Send_Notification(NOTIF_ALL, NULL, MSG_ANNCE, ANNCE_OVERTIME);
@@ -1563,13 +1563,13 @@ float WinningCondition_Scores(float limit, float leadlimit)
 			fragsleft_last = fragsleft;
 		}
 	}
-	
+
 	// z411 - lead announcer
 	if(MUTATOR_CALLHOOK(Scores_AnnounceLeads)) {
 		if (Score_NewLeader())
 			AnnounceNewLeader();
 	}
-	
+
 	bool fraglimit_reached = (limit && WinningConditionHelper_topscore >= limit);
 	bool leadlimit_reached = (leadlimit && WinningConditionHelper_topscore - WinningConditionHelper_secondscore >= leadlimit);
 
@@ -1685,7 +1685,7 @@ void CheckRules_World()
 			// again, but this shouldn't hurt
 		return;
 	}
-	
+
 	// z411 don't check rules if we're in a timeout
 	if (game_timeout) return;
 
@@ -2150,6 +2150,8 @@ void readlevelcvars()
 {
 	if(cvar("sv_allow_fullbright"))
 		serverflags |= SERVERFLAG_ALLOW_FULLBRIGHT;
+	if(cvar("sv_forbid_pickuptimer"))
+		serverflags |= SERVERFLAG_FORBID_PICKUPTIMER;
 
 	sv_ready_restart_after_countdown = cvar("sv_ready_restart_after_countdown");
 

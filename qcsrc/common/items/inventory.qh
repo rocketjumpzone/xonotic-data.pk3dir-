@@ -57,7 +57,7 @@ NET_HANDLE(ENT_CLIENT_INVENTORY, bool isnew)
     make_pure(this);
     //g_inventory = this;
     //this.entremove = Inventory_remove;
-	
+
 	float entnum = ReadByte() - 1;
 	inventoryslots[entnum] = this;
 
@@ -75,14 +75,14 @@ NET_HANDLE(ENT_CLIENT_INVENTORY, bool isnew)
             .int fld = inv_items[it.m_id];
             int prev = this.(fld);
             int next = this.(fld) = ReadByte();
-			
+
 			if(entnum == current_player) {
 				if(last_pickup_item != it) last_pickup_times = 0;
 				last_pickup_timer = timer;
 				last_pickup_item = it;
 				last_pickup_times++;
 			}
-			
+
             LOG_DEBUGF("%s: %.0f -> %.0f", it.m_name, prev, next);
         }
     }
@@ -92,12 +92,12 @@ NET_HANDLE(ENT_CLIENT_INVENTORY, bool isnew)
 NET_HANDLE(TE_CSQC_WEAPONPICKUP, bool isnew)
 {
 	const Weapon it = REGISTRY_GET(Weapons, ReadByte());
-	
+
 	if(last_pickup_item != it) last_pickup_times = 0;
 	last_pickup_timer = timer;
 	last_pickup_item = it;
 	last_pickup_times++;
-	
+
 	return true;
 }
 #endif
@@ -156,11 +156,11 @@ bool Inventory_Send(Inventory this, Client to, int sf)
     TC(Inventory, this);
     WriteHeader(MSG_ENTITY, ENT_CLIENT_INVENTORY);
     TC(PlayerState, this.owner);
-    
+
     // z411 send entity number
     WriteByte(MSG_ENTITY, etof(this.owner.m_client));
-    
-    Inventory_Write(this, to.inventory_store);
+
+    Inventory_Write(this, this.owner.m_client.inventory_store);
     return true;
 }
 

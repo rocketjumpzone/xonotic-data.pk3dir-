@@ -99,7 +99,7 @@ void send_CSQC_teamnagger() {
 
 void send_TeamNames(int channel, entity to) {
 	msg_entity = to;
-	
+
 	WriteHeader(channel, TE_CSQC_TEAMNAMES);
 	WriteString(channel, autocvar_g_teamnames_red);
 	WriteString(channel, autocvar_g_teamnames_blue);
@@ -611,7 +611,7 @@ void PutPlayerInServer(entity this)
 	this.effects = EF_TELEPORT_BIT | EF_RESTARTANIM_BIT;
 
 	ResetPlayerResources(this);
-	
+
 	SetSpectatee_status(this, 0);
 
 	PS(this).dual_weapons = '0 0 0';
@@ -894,9 +894,9 @@ void ClientInit_misc(entity this)
 	WriteByte(channel, this.cnt * 255.0); // g_balance_damagepush_speedfactor
 	WriteByte(channel, serverflags);
 	WriteCoord(channel, autocvar_g_trueaim_minrange);
-	
+
 	// z411 send full hostname
-	WriteString(channel, autocvar_hostname_full);
+	WriteString(channel, (autocvar_hostname_full != "" ? autocvar_hostname_full : autocvar_hostname));
 	WriteString(channel, autocvar_sv_motd_permanent);
 }
 
@@ -1086,7 +1086,7 @@ string getwelcomemessage(entity this)
 
 	//string versionmessage = GetClientVersionMessage(this);
 	//string s = strcat(versionmessage, "^8\n^9", (autocvar_hostname_full ? autocvar_hostname_full : autocvar_hostname));
-	string s = (autocvar_hostname_full ? autocvar_hostname_full : autocvar_hostname);
+	string s = (autocvar_hostname_full != "" ? autocvar_hostname_full : autocvar_hostname);
 
 	s = strcat(s, "^8\n^7", gamemode_name);
 
@@ -2056,7 +2056,7 @@ void Join(entity this)
 	else
 		Send_Notification(NOTIF_ALL, NULL, MSG_INFO, INFO_JOIN_PLAY, this.netname);
 	this.team_selected = false;
-	
+
 	// z411
 	// send constant ready notification
 	if(warmup_stage)
